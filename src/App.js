@@ -6,7 +6,7 @@ import CreateBlogForm from './components/CreateBlogForm';
 import loginService from './services/login';
 import Notification from './components/Notification';
 import Togglable from './components/Togglable';
-
+// Some *comment*
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
@@ -15,8 +15,10 @@ const App = () => {
   const [theme, setTheme] = useState('');
 
   // again for testing purposes
-  // eslint-disable-next-line no-shadow
-  if (blogs.some((ele) => !ele.user)) { setBlogs((blogs) => blogs.filter((ele) => ele.user)); }
+  if (blogs.some((ele) => !ele.user)) {
+    // eslint-disable-next-line no-shadow
+    setBlogs((blogs) => blogs.filter((ele) => ele.user));
+  }
 
   function messageSetter(msg, color) {
     setNotificationMessage(msg);
@@ -65,7 +67,7 @@ const App = () => {
   function resorter() {
     blogService
       .getAll()
-      // eslint-disable-next-line no-shadow
+    // eslint-disable-next-line no-shadow
       .then((blogs) => setBlogs(blogs.concat().sort((a, b) => b.likes - a.likes)))
       .catch((err) => {
         // eslint-disable-next-line no-console
@@ -97,39 +99,38 @@ const App = () => {
   }, []);
 
   return (
-    <div>
-      {user ? (
-        <>
-          <h2>blogs</h2>
-          <Notification theme={theme} message={notificationMessage} />
-          <p>
-            {user.username}
-            {' '}
-            logged in
-            {' '}
-            <button type="submit" onClick={clickHandler}>Logout</button>
-          </p>
-          {/* togglable is a reusable component */}
-          <Togglable buttonDialogue="create new blog" ref={togglableRef}>
-            <CreateBlogForm formSubmission={createBlog} />
-          </Togglable>
-          {blogs.map((blog) => (
-            <Blog
-              key={blog.id}
-              blog={blog}
-              resorter={resorter}
-              username={user.username}
-            />
-          ))}
-        </>
-      ) : (
-        <>
-          <h2>log in to application</h2>
-          <Notification theme={theme} message={notificationMessage} />
-          <LoginForm onFormSubmission={userLogin} />
-        </>
-      )}
-    </div>
+  <div>
+   {user ? (
+    <>
+     <h2>blogs</h2>
+     <Notification theme={theme} message={notificationMessage} />
+     <p>
+      {user.username} logged in{' '}
+      <button type="submit" onClick={clickHandler}>
+       Logout
+      </button>
+     </p>
+     {/* togglable is a reusable component */}
+     <Togglable buttonDialogue="create new blog" ref={togglableRef}>
+      <CreateBlogForm formSubmission={createBlog} />
+     </Togglable>
+     {blogs.map((blog) => (
+      <Blog
+       key={blog.id}
+       blog={blog}
+       resorter={resorter}
+       username={user.username}
+      />
+     ))}
+    </>
+   ) : (
+    <>
+     <h2>log in to application</h2>
+     <Notification theme={theme} message={notificationMessage} />
+     <LoginForm onFormSubmission={userLogin} />
+    </>
+   )}
+  </div>
   );
 };
 
